@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.JusoResponse
 import com.example.ddobagi3.network.JusoRetrofitClient
+import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Response
 
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         val call : Call<JusoResponse> = JusoRetrofitClient.instance.GetData.getXYByJuso(APIKey,1,10,"청계")
 
         call.enqueue(object : retrofit2.Callback<JusoResponse>{
