@@ -1,6 +1,6 @@
 package com.example.ddobagi3.model
 
-data class DiaryData (
+class DiaryData (
     var title : String,
     var date : String,
     var adress : String,
