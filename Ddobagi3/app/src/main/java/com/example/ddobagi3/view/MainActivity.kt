@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi
 import com.example.ddobagi3.R
 import com.example.ddobagi3.adpater.DiaryAdapter
 import com.example.ddobagi3.model.DiaryData
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_main.*
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
@@ -29,6 +31,10 @@ class MainActivity : AppCompatActivity() {
         val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)
         val formatted = current.format(formatter)
         TodayDate.text = formatted
+
+        val database : FirebaseDatabase = FirebaseDatabase.getInstance()
+        val myRef : DatabaseReference = database.getReference("message")
+        myRef.setValue("안녕 반가워!")
 
         val diaryList = arrayListOf(
             DiaryData("히", "2020-10-10", "경기 1로 9", "1"),

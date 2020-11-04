@@ -7,14 +7,16 @@
     tools:context=".view.JusoActivity"
     android:background="#f6f6f6">
 
-    <LinearLayout
-        android:id="@+id/TopLinear"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/TopCardView"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        app:cardCornerRadius="10dp"
+        android:layout_margin="5dp"
+        app:cardElevation="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"
         android:background="@color/white">
         <TextView
             android:layout_width="match_parent"
@@ -31,20 +33,23 @@
             android:text="오늘은 어디에 가셨나요?"
             android:fontFamily="@font/bold"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="50dp"
             android:textSize="12sp"
             android:textColor="@color/black"/>
-    </LinearLayout>
-    <LinearLayout
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/SecondLinear"
         android:layout_width="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/TopLinear"
+        app:layout_constraintTop_toBottomOf="@+id/TopCardView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_height="70dp"
-        android:orientation="vertical"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp"
+        android:layout_margin="5dp"
         android:padding="2dp"
         android:background="@color/white"
-        android:layout_marginTop="4dp">
+        android:layout_height="70dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,20 +62,23 @@
         <EditText
             android:id="@+id/et_adress"
             android:hint="주소를 입력해주세요!"
+            android:background="@null"
             android:textSize="12sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="16dp"
             android:layout_marginEnd="8dp"/>
 
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_adress"
-        app:layout_constraintTop_toBottomOf="@+id/SecondLinear"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/SecondLinear" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

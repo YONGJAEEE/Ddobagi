@@ -1,6 +1,7 @@
 package com.example.ddobagi3.adpater
 
 
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.Documents
+import com.example.ddobagi3.view.WriteActivity
 
 class AdressAdapter(val AdressList : ArrayList<Documents>) : RecyclerView.Adapter<AdressAdapter.Holder>(){
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
@@ -17,6 +19,10 @@ class AdressAdapter(val AdressList : ArrayList<Documents>) : RecyclerView.Adapte
         fun bind(juso : Documents) {
             Log.d("TAG", juso.toString())
             jusoText.text = juso.address_name
+
+            itemView.setOnClickListener{
+                itemView.context.startActivity(Intent(itemView.context,WriteActivity::class.java))
+            }
         }
     }
 
