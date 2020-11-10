@@ -8,32 +8,18 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.DiaryData
-import com.google.firebase.firestore.FirebaseFirestore
 
-class DiaryAdapter(firestore : FirebaseFirestore?) : RecyclerView.Adapter<DiaryAdapter.Holder>(){
-    var diaryList : ArrayList<DiaryData> = arrayListOf()
+class DiaryAdapter(var diaryList : ArrayList<DiaryData>) : RecyclerView.Adapter<DiaryAdapter.Holder>(){
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val title = itemView.findViewById<TextView>(R.id.tv_title)
         val date = itemView.findViewById<TextView>(R.id.tv_date)
         val adress = itemView.findViewById<TextView>(R.id.tv_adress)
-
 
         fun bind(diary: DiaryData) {
             Log.d("TAG", diary.toString())
             title.text = diary.title
             date.text = diary.date
             adress.text = diary.location
-        }
-    }
-    init {
-        firestore?.collection("book")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-            diaryList.clear()
-
-            for (snapshot in querySnapshot!!.documents) {
-                var item = snapshot.toObject(DiaryData::class.java)
-                diaryList.add(item!!)
-            }
-            notifyDataSetChanged()
         }
     }
 

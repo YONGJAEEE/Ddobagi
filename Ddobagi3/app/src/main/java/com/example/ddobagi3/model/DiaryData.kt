@@ -8,3 +8,4 @@ class DiaryData (
     var location : String,
     var content : String
 )
+
