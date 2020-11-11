@@ -24,6 +24,7 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ?.collection("diary")
 
         ref!!.get().addOnSuccessListener {result->
+            diaryList.clear()
             for (document in result) {
                 val diaryData = DiaryData(
                     document.data["title"].toString(),
@@ -35,8 +36,9 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 )
                 Log.d("TAG", "${document.id} => ${document.data}")
                 diaryList.add(diaryData)
-                notifyDataSetChanged()
             }
+            notifyDataSetChanged()
+
         }.addOnFailureListener {
             Log.e("test", "fAIL")
         }
