@@ -56,8 +56,18 @@ class MainActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         firestore = FirebaseFirestore.getInstance()
-        recyclerview.adapter = RecyclerViewAdapter()
+//        recyclerview.adapter = RecyclerViewAdapter()
+        val ref = firestore?.collection("USER")
+            ?.document(MyApplication.prefs.getString("uid","null"))
+            ?.collection("diary")
 
+        ref!!.get().addOnSuccessListener {result->
+            for (document in result) {
+                Log.d("TAG", "${document.id} => ${document.data}")
+            }
+        }.addOnFailureListener {
+            Log.e("test", "fAIL")
+        }
         Log.d("TAG",MyApplication.prefs.getString("uid","null"))
 
         btn_float.setButtonIconResource(R.drawable.ic_open)
@@ -90,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
     inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        var telephoneBook : ArrayList<DiaryData> = arrayListOf()
+        var diaryList = mutableListOf<DiaryData>()
 
         init {
             val ref = firestore?.collection("USER")
@@ -98,15 +108,16 @@ class MainActivity : AppCompatActivity() {
                 ?.collection("diary")
 
             ref!!.get().addOnSuccessListener {
-                Log.e("test", it.documents[0].data.toString())
+                val item = it.toObjects(DiaryData::class.java)
+                Log.d("TAG",item.toString())
+                diaryList = item
             }.addOnFailureListener {
                 Log.e("test", "fAIL")
             }
 
-
 //                for (snapshot in querySnapshot!!.documents) {
 //                    var item = snapshot.toObject(DiaryData::class.java)
-//                    telephoneBook.add(item!!)
+//                    diaryList.add(item!!)
 //                }
                 notifyDataSetChanged()
             }
@@ -124,14 +135,14 @@ class MainActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             var viewHolder = (holder as ViewHolder).itemView
 
-            viewHolder.tv_title.text = telephoneBook[position].title
-            viewHolder.tv_date.text = telephoneBook[position].date
-            viewHolder.tv_adress.text = telephoneBook[position].location
+            viewHolder.tv_title.text = diaryList[position].title
+            viewHolder.tv_date.text = diaryList[position].date
+            viewHolder.tv_adress.text = diaryList[position].location
         }
 
         // 리사이클러뷰의 아이템 총 개수 반환
         override fun getItemCount(): Int {
-            return telephoneBook.size
+            return diaryList.size
         }
     }
 }
