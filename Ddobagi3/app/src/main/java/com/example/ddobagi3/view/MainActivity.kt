@@ -37,7 +37,6 @@ import kotlin.collections.ArrayList
 @RequiresApi(Build.VERSION_CODES.O)
 class MainActivity : AppCompatActivity() {
     private var buttonIcon = 0
-    var firestore : FirebaseFirestore? = null
     private lateinit var googleSignInClient: GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,19 +54,8 @@ class MainActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        firestore = FirebaseFirestore.getInstance()
-//        recyclerview.adapter = RecyclerViewAdapter()
-        val ref = firestore?.collection("USER")
-            ?.document(MyApplication.prefs.getString("uid","null"))
-            ?.collection("diary")
+        recyclerview.adapter = DiaryAdapter()
 
-        ref!!.get().addOnSuccessListener {result->
-            for (document in result) {
-                Log.d("TAG", "${document.id} => ${document.data}")
-            }
-        }.addOnFailureListener {
-            Log.e("test", "fAIL")
-        }
         Log.d("TAG",MyApplication.prefs.getString("uid","null"))
 
         btn_float.setButtonIconResource(R.drawable.ic_open)
@@ -77,72 +65,28 @@ class MainActivity : AppCompatActivity() {
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
         override fun getCount() = 3
 
-        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem = when (position){
-            0 -> SpeedDialMenuItem(context, R.drawable.write,"Write Diary")
-            1 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme,"About Developer")
-            2 -> SpeedDialMenuItem(context,R.drawable.ic_aboutme,"SignOut")
-            else -> throw IllegalArgumentException("No Menu Item")
-        }
+        override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
+            when (position) {
+                0 -> SpeedDialMenuItem(context, R.drawable.write, "Write Diary")
+                1 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "About Developer")
+                2 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "SignOut")
+                else -> throw IllegalArgumentException("No Menu Item")
+            }
+
         override fun fabRotationDegrees(): Float = if (buttonIcon == 0) 135F else 0F
 
         override fun onMenuItemClick(position: Int): Boolean {
-            when(position){
-                0 -> startActivity(Intent(this@MainActivity,JusoActivity::class.java))
-                1 -> startActivity(Intent(this@MainActivity,AboutMeActivity::class.java))
+            when (position) {
+                0 -> startActivity(Intent(this@MainActivity, JusoActivity::class.java))
+                1 -> startActivity(Intent(this@MainActivity, AboutMeActivity::class.java))
                 2 -> {
                     FirebaseAuth.getInstance().signOut()
                     googleSignInClient.signOut()
-                    startActivity(Intent(this@MainActivity,LoginActivity::class.java))
+                    startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                     finish()
                 }
             }
             return true
-        }
-    }
-    inner class RecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-        var diaryList = mutableListOf<DiaryData>()
-
-        init {
-            val ref = firestore?.collection("USER")
-                ?.document(MyApplication.prefs.getString("uid","null"))
-                ?.collection("diary")
-
-            ref!!.get().addOnSuccessListener {
-                val item = it.toObjects(DiaryData::class.java)
-                Log.d("TAG",item.toString())
-                diaryList = item
-            }.addOnFailureListener {
-                Log.e("test", "fAIL")
-            }
-
-//                for (snapshot in querySnapshot!!.documents) {
-//                    var item = snapshot.toObject(DiaryData::class.java)
-//                    diaryList.add(item!!)
-//                }
-                notifyDataSetChanged()
-            }
-
-
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            var view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-            return ViewHolder(view)
-        }
-
-        inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            var viewHolder = (holder as ViewHolder).itemView
-
-            viewHolder.tv_title.text = diaryList[position].title
-            viewHolder.tv_date.text = diaryList[position].date
-            viewHolder.tv_adress.text = diaryList[position].location
-        }
-
-        // 리사이클러뷰의 아이템 총 개수 반환
-        override fun getItemCount(): Int {
-            return diaryList.size
         }
     }
 }
