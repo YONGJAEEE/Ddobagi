@@ -13,7 +13,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.item.view.*
 
 class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var diaryList = mutableListOf<DiaryData>()
+    var diaryList : ArrayList<DiaryData> = arrayListOf()
     var firestore : FirebaseFirestore? = null
 
     init {
@@ -23,25 +23,21 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ?.document(MyApplication.prefs.getString("uid","null"))
             ?.collection("diary")
 
-        ref!!.get().addOnSuccessListener {result->
+        ref!!.addSnapshotListener() {querySnapshot, firebaseFirestoreException->
             diaryList.clear()
-            for (document in result) {
-                val diaryData = DiaryData(
-                    document.data["title"].toString(),
-                    document.data["date"].toString(),
-                    document.data["hashtag"].toString(),
-                    document.data["weather"].toString(),
-                    document.data["location"].toString(),
-                    document.data["content"].toString()
+            for (snapshot in querySnapshot!!.documents) {
+                val item = DiaryData(
+                    snapshot.get("title").toString(),
+                    snapshot.get("date").toString(),
+                    snapshot.get("hashtag").toString(),
+                    snapshot.get("weather").toString(),
+                    snapshot.get("location").toString(),
+                    snapshot.get("content").toString()
                 )
-                Log.d("TAG", "${document.id} => ${document.data}")
-                diaryList.add(diaryData)
+                diaryList.add(item)
             }
             notifyDataSetChanged()
-
-        }.addOnFailureListener {
-            Log.e("test", "fAIL")
-        }
+            }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
