@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.Documents
+import com.example.ddobagi3.view.JusoActivity
 import com.example.ddobagi3.view.WriteActivity
 
 class AdressAdapter(val AdressList : ArrayList<Documents>) : RecyclerView.Adapter<AdressAdapter.Holder>(){

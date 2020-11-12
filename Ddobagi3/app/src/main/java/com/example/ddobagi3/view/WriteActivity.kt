@@ -45,6 +45,7 @@ class WriteActivity : AppCompatActivity() {
                     Toast.makeText(this, "일기를 저장하는데 성공했어요.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this,MainActivity::class.java)
                     startActivity(intent)
+
             }.addOnFailureListener{
                     Toast.makeText(this, "일기를 저장하는데 실패했어요.", Toast.LENGTH_SHORT).show()
                 }
