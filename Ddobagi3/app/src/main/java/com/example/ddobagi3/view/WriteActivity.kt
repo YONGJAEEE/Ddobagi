@@ -22,9 +22,9 @@ class WriteActivity : AppCompatActivity() {
         firestore = FirebaseFirestore.getInstance()
         val time: LocalDateTime = LocalDateTime.now()
 
-        if (intent.hasExtra("addressName")){
-
-        }
+        val adressName = intent.getStringExtra("adressName")
+        val x = intent.getStringExtra("x")
+        val y = intent.getStringExtra("y")
 
         btn_save.setOnClickListener(){
 

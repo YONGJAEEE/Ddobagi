@@ -70,8 +70,8 @@ class MainActivity : AppCompatActivity() {
         override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
             when (position) {
                 0 -> SpeedDialMenuItem(context, R.drawable.write, "Write Diary")
-                1 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "About Developer")
-                2 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "SignOut")
+                1 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "SignOut")
+                2 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "About Developer")
                 else -> throw IllegalArgumentException("No Menu Item")
             }
 
@@ -80,13 +80,13 @@ class MainActivity : AppCompatActivity() {
         override fun onMenuItemClick(position: Int): Boolean {
             when (position) {
                 0 -> startActivity(Intent(this@MainActivity, JusoActivity::class.java))
-                1 -> startActivity(Intent(this@MainActivity, AboutMeActivity::class.java))
-                2 -> {
+                1 -> {
                     FirebaseAuth.getInstance().signOut()
                     googleSignInClient.signOut()
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                     finish()
                 }
+                2 -> startActivity(Intent(this@MainActivity, AboutMeActivity::class.java))
             }
             return true
         }

@@ -92,12 +92,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="비 오던 날"/>
+                        android:text="비 오던"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/black"
-                        android:text="이였습니다."/>
+                        android:text=" 날 이였습니다."/>
                 </LinearLayout>
             </LinearLayout>
             
@@ -122,6 +122,7 @@
                     android:textSize="16sp" />
 
                 <EditText
+                    android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -145,6 +146,7 @@
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
                 <EditText
+                    android:id="@+id/et_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
