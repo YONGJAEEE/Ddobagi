@@ -23,13 +23,12 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
             ?.document(MyApplication.prefs.getString("uid","null"))
             ?.collection("diary")
 
-        ref!!.addSnapshotListener() {querySnapshot, firebaseFirestoreException->
+        ref!!.addSnapshotListener() {querySnapshot, _->
             diaryList.clear()
             for (snapshot in querySnapshot!!.documents) {
                 val item = DiaryData(
                     snapshot.get("title").toString(),
                     snapshot.get("date").toString(),
-                    snapshot.get("hashtag").toString(),
                     snapshot.get("weather").toString(),
                     snapshot.get("location").toString(),
                     snapshot.get("content").toString()

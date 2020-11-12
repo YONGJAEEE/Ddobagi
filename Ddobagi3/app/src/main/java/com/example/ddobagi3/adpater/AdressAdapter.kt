@@ -17,11 +17,14 @@ class AdressAdapter(val AdressList : ArrayList<Documents>) : RecyclerView.Adapte
         val jusoText = itemView.findViewById<TextView>(R.id.tv_juso)
 
         fun bind(juso : Documents) {
-            Log.d("TAG", juso.toString())
             jusoText.text = juso.address_name
 
             itemView.setOnClickListener{
-                itemView.context.startActivity(Intent(itemView.context,WriteActivity::class.java))
+                val intent = Intent(itemView.context,WriteActivity::class.java)
+                intent.putExtra("adressName",juso.address_name)
+                intent.putExtra("x",juso.x)
+                intent.putExtra("y",juso.y)
+                itemView.context.startActivity(intent)
             }
         }
     }
