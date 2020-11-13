@@ -10,6 +10,7 @@ import com.example.ddobagi3.R
 import com.example.ddobagi3.widget.MyApplication
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_write.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -29,11 +30,11 @@ class WriteActivity : AppCompatActivity() {
         btn_save.setOnClickListener(){
 
             val a = hashMapOf(
-                "title" to "ㅁㄴㅇㅁㄴㅇ",
-                "date" to "2020-11-13",
+                "title" to et_title.text.toString(),
+                "date" to LocalDate.now().toString(),
                 "weather" to "비",
-                "location" to "동탄대로 1길",
-                "content" to "ㅁ나ㅓㅇㅁ나ㅓ유ㅏㅓㅁ뉴아ㅓ"
+                "location" to adressName,
+                "content" to et_content.text.toString()
                 )
 
             val ref = firestore?.collection("USER")
@@ -45,7 +46,6 @@ class WriteActivity : AppCompatActivity() {
                     Toast.makeText(this, "일기를 저장하는데 성공했어요.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this,MainActivity::class.java)
                     startActivity(intent)
-
             }.addOnFailureListener{
                     Toast.makeText(this, "일기를 저장하는데 실패했어요.", Toast.LENGTH_SHORT).show()
                 }
