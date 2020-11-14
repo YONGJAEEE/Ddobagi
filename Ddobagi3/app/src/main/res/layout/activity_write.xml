@@ -86,16 +86,20 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
-                        android:text="오늘의 날씨는 "/>
+                        android:text="오늘은 "/>
+                    <TextView
+                        android:id="@+id/tv_weather"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        android:text="해가 맑던"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/black"
-                        android:text="비 오던"/>
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
                         android:textColor="@color/black"
                         android:text=" 날 이였습니다."/>
                 </LinearLayout>

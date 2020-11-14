@@ -6,7 +6,6 @@ data class WeatherResponse(
     val cod: Int?
 )
 
-
 data class Weather(
     val id: Int?,
     val main: String?,

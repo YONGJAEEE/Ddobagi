@@ -13,6 +13,7 @@ import com.example.ddobagi3.model.WeatherResponse
 import com.example.ddobagi3.network.JusoRetrofitClient
 import com.example.ddobagi3.network.WeatherClient
 import com.example.ddobagi3.widget.MyApplication
+import com.example.ddobagi3.widget.Translation
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_write.*
 import retrofit2.Call
@@ -23,6 +24,9 @@ import java.time.LocalDateTime
 @RequiresApi(Build.VERSION_CODES.O)
 class WriteActivity : AppCompatActivity() {
     var firestore: FirebaseFirestore? = null
+    var todayWeather = "0"
+    val translation = Translation()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_write)
@@ -40,7 +44,7 @@ class WriteActivity : AppCompatActivity() {
             val a = hashMapOf(
                 "title" to et_title.text.toString(),
                 "date" to LocalDate.now().toString(),
-                "weather" to "비",
+                "weather" to todayWeather,
                 "location" to adressName,
                 "content" to et_content.text.toString()
             )
@@ -60,7 +64,7 @@ class WriteActivity : AppCompatActivity() {
         }
     }
 
-    fun getWeather(x: String, y: String) {
+    fun getWeather(x: String, y: String){
         val call: Call<WeatherResponse> =
             WeatherClient.instance.GetData.getWeather(x, y, "117f9473192d7aaf0fb9843665d8eb99")
 
@@ -68,11 +72,12 @@ class WriteActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse> ) {
                 Log.d("TAG",response.body().toString())
+                todayWeather = translation.changeWeather(response.body()!!.weather!!.get(0).id!!)
+                tv_weather.setText(todayWeather)
             }
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
                 Log.d("Fail",t.toString())
             }
-
         }
         )
     }
