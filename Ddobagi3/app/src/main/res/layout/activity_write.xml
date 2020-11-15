@@ -160,7 +160,7 @@
                     android:background="@null"
                     android:hint="내용을 작성해주세요."
                     android:scrollHorizontally="false"
-                    android:inputType="none"
+                    android:inputType="textMultiLine"
                     android:singleLine="false"
                     android:importantForAutofill="no" />
             </LinearLayout>

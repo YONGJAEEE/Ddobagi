@@ -5,6 +5,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.KeyEvent
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.ddobagi3.R
@@ -37,7 +39,6 @@ class WriteActivity : AppCompatActivity() {
         val adressName = intent.getStringExtra("adressName")
         val lon = intent.getStringExtra("x")
         val lat = intent.getStringExtra("y")
-
         getWeather(lat!!,lon!!)
 
         btn_save.setOnClickListener() {
@@ -46,7 +47,7 @@ class WriteActivity : AppCompatActivity() {
                 "date" to LocalDate.now().toString(),
                 "weather" to todayWeather,
                 "location" to adressName,
-                "content" to et_content.text.toString()
+                "content" to et_content.text.toString().replace("\n","_")
             )
 
             val ref = firestore?.collection("USER")
@@ -69,10 +70,9 @@ class WriteActivity : AppCompatActivity() {
             WeatherClient.instance.GetData.getWeather(x, y, "117f9473192d7aaf0fb9843665d8eb99")
 
         call.enqueue(object : retrofit2.Callback<WeatherResponse> {
-
             override fun onResponse(call: Call<WeatherResponse>, response: Response<WeatherResponse> ) {
                 Log.d("TAG",response.body().toString())
-                todayWeather = translation.changeWeather(response.body()!!.weather!!.get(0).id!!)
+                todayWeather = translation.changeWeather(response.body()!!.weather!![0].id!!)
                 tv_weather.setText(todayWeather)
             }
             override fun onFailure(call: Call<WeatherResponse>, t: Throwable) {
