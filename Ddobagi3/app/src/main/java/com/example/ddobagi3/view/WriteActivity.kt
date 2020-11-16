@@ -25,7 +25,7 @@ import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 class WriteActivity : AppCompatActivity() {
-    var firestore: FirebaseFirestore? = null
+    lateinit var firestore: FirebaseFirestore
     var todayWeather = "0"
     val translation = Translation()
 
