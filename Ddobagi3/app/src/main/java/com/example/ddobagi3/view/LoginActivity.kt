@@ -15,6 +15,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -74,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     Log.w("LoginActivity", "firebaseAuthWithGoogle 성공", task.exception)
                     MyApplication.prefs.setString("uid",task.result!!.user!!.uid)
+
                     toMainActivity(firebaseAuth.currentUser)
                 } else {
                     Log.w("LoginActivity", "firebaseAuthWithGoogle 실패", task.exception)
@@ -81,7 +83,6 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
-
 
     fun toMainActivity(user: FirebaseUser?) {
         if (user != null) {

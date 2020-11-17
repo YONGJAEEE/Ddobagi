@@ -50,11 +50,11 @@ class WriteActivity : AppCompatActivity() {
                 "content" to et_content.text.toString().replace("\n","_")
             )
 
-            val ref = firestore?.collection("USER")
-                ?.document(MyApplication.prefs.getString("uid", "null"))
-                ?.collection("diary")
+            val ref = firestore.collection("USER")
+                .document(MyApplication.prefs.getString("uid", "null"))
+                .collection("diary")
 
-            ref!!.document(time.toString()).set(a)
+            ref.document(time.toString()).set(a)
                 .addOnSuccessListener {
                     Toast.makeText(this, "일기를 저장하는데 성공했어요.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)

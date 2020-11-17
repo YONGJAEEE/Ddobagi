@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.adpater.AdressAdapter
@@ -61,7 +62,6 @@ class MainActivity : AppCompatActivity() {
 
         btn_float.setButtonIconResource(R.drawable.ic_open)
         btn_float.speedDialMenuAdapter = speedDialMenuAdapter
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
     }
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {

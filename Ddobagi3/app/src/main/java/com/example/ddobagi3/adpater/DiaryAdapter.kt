@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.DiaryData
@@ -15,7 +16,6 @@ import kotlinx.android.synthetic.main.item.view.*
 class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     var diaryList : ArrayList<DiaryData> = arrayListOf()
     var firestore : FirebaseFirestore? = null
-
     init {
         firestore = FirebaseFirestore.getInstance()
 
@@ -40,7 +40,7 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
         return ViewHolder(view)
     }
 
@@ -48,7 +48,7 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        var viewHolder = (holder as ViewHolder).itemView
+        val viewHolder = (holder as ViewHolder).itemView
 
         viewHolder.tv_title.text = diaryList[position].title
         viewHolder.tv_date.text = diaryList[position].date
