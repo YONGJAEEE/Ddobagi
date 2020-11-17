@@ -11,6 +11,7 @@ import com.example.ddobagi3.R
 import com.example.ddobagi3.model.DiaryData
 import com.example.ddobagi3.widget.MyApplication
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.item.view.*
 
 class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -21,9 +22,9 @@ class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         val ref = firestore?.collection("USER")
             ?.document(MyApplication.prefs.getString("uid","null"))
-            ?.collection("diary")
+            ?.collection("diary")!!.orderBy("date", Query.Direction.DESCENDING)
 
-        ref!!.addSnapshotListener() {querySnapshot, _->
+        ref.addSnapshotListener() {querySnapshot, _->
             diaryList.clear()
             for (snapshot in querySnapshot!!.documents) {
                 val item = DiaryData(
