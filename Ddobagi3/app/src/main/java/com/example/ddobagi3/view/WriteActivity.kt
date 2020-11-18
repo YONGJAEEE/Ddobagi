@@ -26,7 +26,7 @@ import java.time.LocalDateTime
 @RequiresApi(Build.VERSION_CODES.O)
 class WriteActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
-    var todayWeather = "0"
+    var todayWeather = ""
     val translation = Translation()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +42,9 @@ class WriteActivity : AppCompatActivity() {
         getWeather(lat!!,lon!!)
 
         btn_save.setOnClickListener() {
+            val strTime = time.toString()
             val a = hashMapOf(
+                "documentId" to strTime,
                 "title" to et_title.text.toString(),
                 "date" to LocalDate.now().toString(),
                 "weather" to todayWeather,
@@ -54,7 +56,7 @@ class WriteActivity : AppCompatActivity() {
                 .document(MyApplication.prefs.getString("uid", "null"))
                 .collection("diary")
 
-            ref.document(time.toString()).set(a)
+                ref.document(strTime).set(a)
                 .addOnSuccessListener {
                     Toast.makeText(this, "일기를 저장하는데 성공했어요.", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)

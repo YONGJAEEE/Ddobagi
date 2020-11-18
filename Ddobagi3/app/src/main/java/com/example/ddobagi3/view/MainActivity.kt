@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item.view.*
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
@@ -40,11 +41,17 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity() {
     private var buttonIcon = 0
     private lateinit var googleSignInClient: GoogleSignInClient
+    var diaryList : ArrayList<DiaryData> = arrayListOf()
+    lateinit var firestore : FirebaseFirestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        firestore = FirebaseFirestore.getInstance()
+        val ref = firestore.collection("USER")
+            .document(MyApplication.prefs.getString("uid","null"))
+            .collection("diary")
         val current = LocalDateTime.now()
         val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)
         val formatted = current.format(formatter)
@@ -54,24 +61,45 @@ class MainActivity : AppCompatActivity() {
             .requestEmail()
             .build()
 
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        recyclerview.adapter = DiaryAdapter()
-
-        Log.d("TAG",MyApplication.prefs.getString("uid","null"))
-
         btn_float.setButtonIconResource(R.drawable.ic_open)
         btn_float.speedDialMenuAdapter = speedDialMenuAdapter
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        Log.d("TAG",MyApplication.prefs.getString("uid","null"))
+        val diarytAdapter = DiaryAdapter(diaryList)
+        recyclerview.adapter = diarytAdapter
+
+        ref.orderBy("date", Query.Direction.DESCENDING).addSnapshotListener() {querySnapshot, _->
+            diaryList.clear()
+            for (snapshot in querySnapshot!!.documents) {
+                val item = DiaryData(
+                    snapshot.get("documentId").toString(),
+                    snapshot.get("title").toString(),
+                    snapshot.get("date").toString(),
+                    snapshot.get("weather").toString(),
+                    snapshot.get("location").toString(),
+                    snapshot.get("content").toString()
+                )
+                diaryList.add(item)
+            }
+            if (diaryList.size == 0){
+                tv_noDiary.text = "작성한 일기가 없습니다."
+            }else {
+                tv_noDiary.text = ""
+
+                diarytAdapter.notifyDataSetChanged()
+            }
+        }
+
     }
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {
-        override fun getCount() = 3
+        override fun getCount() = 2
 
         override fun getMenuItem(context: Context, position: Int): SpeedDialMenuItem =
             when (position) {
                 0 -> SpeedDialMenuItem(context, R.drawable.write, "Write Diary")
                 1 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "SignOut")
-                2 -> SpeedDialMenuItem(context, R.drawable.ic_aboutme, "About Developer")
                 else -> throw IllegalArgumentException("No Menu Item")
             }
 
@@ -86,7 +114,6 @@ class MainActivity : AppCompatActivity() {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                     finish()
                 }
-                2 -> startActivity(Intent(this@MainActivity, AboutMeActivity::class.java))
             }
             return true
         }

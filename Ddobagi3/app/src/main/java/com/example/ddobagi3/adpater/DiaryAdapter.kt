@@ -1,62 +1,66 @@
 package com.example.ddobagi3.adpater
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.lifecycle.MutableLiveData
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.DiaryData
+import com.example.ddobagi3.view.MainActivity
 import com.example.ddobagi3.widget.MyApplication
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
-import kotlinx.android.synthetic.main.item.view.*
 
-class DiaryAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var diaryList : ArrayList<DiaryData> = arrayListOf()
-    var firestore : FirebaseFirestore? = null
+class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
+    RecyclerView.Adapter<DiaryAdapter.Holder>() {
+
+    var firestore: FirebaseFirestore
+
     init {
         firestore = FirebaseFirestore.getInstance()
-
-        val ref = firestore?.collection("USER")
-            ?.document(MyApplication.prefs.getString("uid","null"))
-            ?.collection("diary")!!.orderBy("date", Query.Direction.DESCENDING)
-
-        ref.addSnapshotListener() {querySnapshot, _->
-            diaryList.clear()
-            for (snapshot in querySnapshot!!.documents) {
-                val item = DiaryData(
-                    snapshot.get("title").toString(),
-                    snapshot.get("date").toString(),
-                    snapshot.get("weather").toString(),
-                    snapshot.get("location").toString(),
-                    snapshot.get("content").toString()
-                )
-                diaryList.add(item)
-            }
-            notifyDataSetChanged()
-            }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val tvTitle = itemView.findViewById<TextView>(R.id.tv_title)
+        val tvDate = itemView.findViewById<TextView>(R.id.tv_date)
+        val tvLocation = itemView.findViewById<TextView>(R.id.tv_adress)
+        fun bind(diaryData: DiaryData) {
+            tvTitle.text = diaryData.title
+            tvDate.text = diaryData.date
+            tvLocation.text = diaryData.location
+
+            itemView.setOnClickListener {
+                
+            }
+            itemView.setOnLongClickListener{
+                val ref = firestore.collection("USER")
+                    .document(MyApplication.prefs.getString("uid", "null"))
+                    .collection("diary")
+
+                ref.document(diaryData.documentId).delete()
+                    .addOnSuccessListener {
+                        Toast.makeText(itemView.context, "삭제에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                        notifyDataSetChanged()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(itemView.context, "삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                true
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item, parent, false)
-        return ViewHolder(view)
+        return Holder(view)
     }
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.bind(diaryList[position])
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val viewHolder = (holder as ViewHolder).itemView
-
-        viewHolder.tv_title.text = diaryList[position].title
-        viewHolder.tv_date.text = diaryList[position].date
-        viewHolder.tv_adress.text = diaryList[position].location
-    }
-
-    // 리사이클러뷰의 아이템 총 개수 반환
     override fun getItemCount(): Int {
         return diaryList.size
     }
