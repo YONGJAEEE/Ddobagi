@@ -5,14 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.WriteActivity">
+    tools:context=".view.ReadDiaryActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/DiaryCardView"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_margin="4dp"
-        android:elevation="10dp"
+        app:cardElevation="10dp"
         app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,27 +21,30 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_gravity="center_vertical">
+
             <TextView
+                android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_gravity="center"
                 android:layout_marginEnd="130dp"
                 android:fontFamily="@font/bold"
-                android:text="다이어리 작성"
+                android:text="제목"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
-            <Button
-                android:id="@+id/btn_save"
-                android:layout_width="70dp"
-                android:layout_height="30dp"
-                android:text="저장"
-                android:layout_marginStart="30dp"
-                android:layout_gravity="center_vertical"
-                android:textColor="@color/white"
-                android:background="@drawable/buttonbackground2"/>
+
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_gravity="end"
+                android:textColor="@color/black"
+                android:text="2020-00-00"/>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -50,6 +53,7 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         app:cardCornerRadius="4dp"
+        app:cardElevation="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -75,6 +79,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/bold"
+                    android:text="Location"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="16dp"
+                        android:layout_height="16dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_location" />
+
+                    <TextView
+                        android:id="@+id/tv_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:text="장소"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/linear1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bold"
                     android:text="Weather"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
@@ -88,7 +133,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="12sp"
                         android:textColor="@color/black"
-                        android:text="오늘은 "/>
+                        android:text="이날은 "/>
                     <TextView
                         android:id="@+id/tv_weather"
                         android:layout_width="wrap_content"
@@ -106,36 +151,6 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/linear2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintTop_toBottomOf="@+id/linear1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="8dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/bold"
-                    android:text="Title"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-
-                <EditText
-                    android:id="@+id/et_title"
-                    android:hint="제목을 적어주세요."
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:importantForAutofill="no"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
@@ -148,21 +163,15 @@
                     android:text="Content"
                     android:fontFamily="@font/bold"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
                     android:textSize="16sp"
                     android:textColor="@color/black"/>
-                <EditText
-                    android:id="@+id/et_content"
+                <TextView
+                    android:id="@+id/tv_content"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@null"
-                    android:hint="내용을 작성해주세요."
-                    android:scrollHorizontally="false"
-                    android:inputType="textMultiLine"
-                    android:singleLine="false"
-                    android:importantForAutofill="no" />
+                    android:textColor="@color/black"
+                    android:text="내용"/>
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

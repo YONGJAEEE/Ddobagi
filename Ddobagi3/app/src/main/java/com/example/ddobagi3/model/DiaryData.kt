@@ -9,5 +9,5 @@ class DiaryData (
     var weather : String,
     var location : String,
     var content : String
-): Serializable
+)
 
