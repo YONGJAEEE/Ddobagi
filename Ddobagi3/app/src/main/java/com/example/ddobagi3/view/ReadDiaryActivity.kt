@@ -10,9 +10,16 @@ class ReadDiaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_read_diary)
 
-        tv_content.text = "asdadssdaasasdads\nsadadsadsasd"
-        tv_date.text = "2020-11-11"
-        tv_location.text = "동탄대로 1길"
-        tv_title.text = "제목이지롱"
+        val title = intent.getStringExtra("title")
+        val date = intent.getStringExtra("date")
+        val content = intent.getStringExtra("content")
+        val location = intent.getStringExtra("location")
+        val weather = intent.getStringExtra("weather")
+
+        tv_content.text = content!!.replace("_","\n")
+        tv_date.text = date
+        tv_location.text = location
+        tv_title.text = title
+        tv_weather.text = weather
     }
 }

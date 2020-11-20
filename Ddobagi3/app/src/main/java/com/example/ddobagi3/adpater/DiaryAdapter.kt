@@ -1,5 +1,6 @@
 package com.example.ddobagi3.adpater
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.DiaryData
 import com.example.ddobagi3.view.MainActivity
+import com.example.ddobagi3.view.ReadDiaryActivity
 import com.example.ddobagi3.widget.MyApplication
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -32,7 +34,13 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
             tvLocation.text = diaryData.location
 
             itemView.setOnClickListener {
-                
+                val intent = Intent(itemView.context,ReadDiaryActivity::class.java)
+                intent.putExtra("title",diaryData.title)
+                intent.putExtra("date",diaryData.date)
+                intent.putExtra("content",diaryData.content)
+                intent.putExtra("location",diaryData.location)
+                intent.putExtra("weather",diaryData.weather)
+                itemView.context.startActivity(intent)
             }
             itemView.setOnLongClickListener{
                 val ref = firestore.collection("USER")

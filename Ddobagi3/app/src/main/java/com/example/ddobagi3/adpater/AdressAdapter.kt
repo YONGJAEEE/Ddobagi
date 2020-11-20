@@ -1,12 +1,16 @@
 package com.example.ddobagi3.adpater
 
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.Documents
@@ -25,6 +29,7 @@ class AdressAdapter(val AdressList : ArrayList<Documents>) : RecyclerView.Adapte
                 intent.putExtra("adressName",juso.address_name)
                 intent.putExtra("x",juso.x)
                 intent.putExtra("y",juso.y)
+                (itemView.context as Activity).finish()
                 itemView.context.startActivity(intent)
             }
         }
