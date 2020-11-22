@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -28,10 +29,15 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
         val tvTitle = itemView.findViewById<TextView>(R.id.tv_title)
         val tvDate = itemView.findViewById<TextView>(R.id.tv_date)
         val tvLocation = itemView.findViewById<TextView>(R.id.tv_adress)
+        val btn = itemView.findViewById<Button>(R.id.btn_any)
         fun bind(diaryData: DiaryData) {
             tvTitle.text = diaryData.title
             tvDate.text = diaryData.date
             tvLocation.text = diaryData.location
+
+            btn.setOnClickListener(){
+                Toast.makeText(itemView.context, "asd", Toast.LENGTH_SHORT).show()
+            }
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context,ReadDiaryActivity::class.java)
