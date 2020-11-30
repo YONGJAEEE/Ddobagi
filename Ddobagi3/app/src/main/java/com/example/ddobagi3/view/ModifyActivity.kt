@@ -1,5 +1,6 @@
 package com.example.ddobagi3.view
 
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +17,7 @@ import java.time.LocalDate
 
 class ModifyActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,22 +38,37 @@ class ModifyActivity : AppCompatActivity() {
         et_title.setText(title)
         et_content.setText(content)
 
-        btn_modify.setOnClickListener(){
-            val modifyData = hashMapOf(
-                "documentId" to documentId,
-                "title" to et_title.text.toString(),
-                "date" to date,
-                "weather" to weather,
-                "location" to location,
-                "content" to et_content.text.toString().replace("\n", "_nbsp_")
-            )
+        btn_modify.setOnClickListener() {
+            if (isInput()) {
+                val modifyData = hashMapOf(
+                    "documentId" to documentId,
+                    "title" to et_title.text.toString(),
+                    "date" to date,
+                    "weather" to weather,
+                    "location" to location,
+                    "content" to et_content.text.toString().replace("\n", "_nbsp_")
+                )
 
-            ref.document(documentId!!).set(modifyData).addOnSuccessListener {
-                Toast.makeText(this, "수정에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                ref.document(documentId!!).set(modifyData)
+                    .addOnSuccessListener {
+                        val intent = Intent(this, MainActivity::class.java)
+                        Toast.makeText(this, "수정에 성공했습니다.", Toast.LENGTH_SHORT).show()
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener() {
+                        Toast.makeText(this, "수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    }
             }
-                .addOnFailureListener(){
-                    Toast.makeText(this, "수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
-                }
         }
+    }
+
+    fun isInput(): Boolean {
+        if (et_title.text.toString().replace(" ", "") == "") {
+            Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return false
+        } else if (et_content.text.toString().replace(" ", "") == "") {
+            Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            return false
+        } else return true
     }
 }
