@@ -16,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         android:elevation="10dp">
 
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +46,7 @@
                 android:layout_marginStart="8dp"
                 android:fontFamily="@font/hansanslight"
                 android:layout_marginTop="42dp"
-                android:text="오늘 다이어리를 작성하지 않았습니다."/>
+                android:text="오른쪽 아래의 버튼으로 일기작성을 시작하세요!"/>
             </androidx.cardview.widget.CardView>
 
 

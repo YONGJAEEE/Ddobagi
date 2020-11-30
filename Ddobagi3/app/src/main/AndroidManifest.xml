@@ -12,9 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.ReadDiaryActivity"></activity>
-        <activity android:name=".view.WriteActivity"></activity>
-        <activity android:name=".view.AboutMeActivity"></activity>
+        <activity android:name=".view.ModifyActivity"></activity>
+        <activity android:name=".view.ReadDiaryActivity" />
+        <activity android:name=".view.WriteActivity" />
         <activity android:name=".view.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

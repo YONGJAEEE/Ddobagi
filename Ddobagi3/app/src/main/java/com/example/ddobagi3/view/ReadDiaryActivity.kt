@@ -16,7 +16,7 @@ class ReadDiaryActivity : AppCompatActivity() {
         val location = intent.getStringExtra("location")
         val weather = intent.getStringExtra("weather")
 
-        tv_content.text = content!!.replace("_","\n")
+        tv_content.text = content!!.replace("_nbsp_", "\n")
         tv_date.text = date
         tv_location.text = location
         tv_title.text = title
