@@ -1,6 +1,5 @@
 package com.example.ddobagi3.view
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,11 +11,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_modify.*
 import kotlinx.android.synthetic.main.activity_modify.et_content
 import kotlinx.android.synthetic.main.activity_modify.et_title
-import kotlinx.android.synthetic.main.activity_write.*
-import java.time.LocalDate
 
 class ModifyActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
+    var backKeyPressedTime : Long = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,7 +34,7 @@ class ModifyActivity : AppCompatActivity() {
             .collection("diary")
 
         et_title.setText(title)
-        et_content.setText(content)
+        et_content.setText(content!!.toString().replace("_nbsp_","\n"))
 
         btn_modify.setOnClickListener() {
             if (isInput()) {
@@ -51,14 +49,23 @@ class ModifyActivity : AppCompatActivity() {
 
                 ref.document(documentId!!).set(modifyData)
                     .addOnSuccessListener {
-                        val intent = Intent(this, MainActivity::class.java)
                         Toast.makeText(this, "수정에 성공했습니다.", Toast.LENGTH_SHORT).show()
-                        startActivity(intent)
+                        finish()
                     }
                     .addOnFailureListener() {
                         Toast.makeText(this, "수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
             }
+        }
+    }
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로가기 버튼을 한번 더 누르면 \n 일기 수정이 취소됩니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish()
         }
     }
 

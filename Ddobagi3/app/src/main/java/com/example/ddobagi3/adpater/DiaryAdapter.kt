@@ -42,7 +42,6 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
             tvLocation.text = diaryData.location
 
             btnModify.setOnClickListener() {
-                Toast.makeText(itemView.context, "asd", Toast.LENGTH_SHORT).show()
                 val intent = Intent(itemView.context, ModifyActivity::class.java)
                 intent.putExtra("documentId", diaryData.documentId)
                 intent.putExtra("weather", diaryData.weather)

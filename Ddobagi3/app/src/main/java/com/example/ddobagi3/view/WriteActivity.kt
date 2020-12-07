@@ -1,18 +1,13 @@
 package com.example.ddobagi3.view
 
-import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.KeyEvent
-import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.ddobagi3.R
-import com.example.ddobagi3.model.JusoResponse
 import com.example.ddobagi3.model.WeatherResponse
-import com.example.ddobagi3.network.JusoRetrofitClient
 import com.example.ddobagi3.network.WeatherClient
 import com.example.ddobagi3.widget.MyApplication
 import com.example.ddobagi3.widget.Translation
@@ -28,6 +23,7 @@ class WriteActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
     var todayWeather = ""
     val translation = Translation()
+    var backKeyPressedTime : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +39,7 @@ class WriteActivity : AppCompatActivity() {
 
         btn_save.setOnClickListener() {
             val strTime = time.toString()
-            if(isInput()) {
+            if (isInput()) {
                 val sendData = hashMapOf(
                     "documentId" to strTime,
                     "title" to et_title.text.toString(),
@@ -60,12 +56,22 @@ class WriteActivity : AppCompatActivity() {
                 ref.document(strTime).set(sendData)
                     .addOnSuccessListener {
                         Toast.makeText(this, "일기를 저장하는데 성공했어요.", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
+                        finish()
                     }.addOnFailureListener {
                         Toast.makeText(this, "일기를 저장하는데 실패했어요.", Toast.LENGTH_SHORT).show()
                     }
             }
+        }
+    }
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로가기 버튼을 한번 더 누르면 \n 일기 작성이 취소됩니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish()
         }
     }
 
@@ -90,15 +96,13 @@ class WriteActivity : AppCompatActivity() {
         )
     }
 
-    fun isInput() : Boolean{
-        if(et_title.text.toString().replace(" ","") == ""){
+    fun isInput(): Boolean {
+        if (et_title.text.toString().replace(" ", "") == "") {
             Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
             return false
-        }
-        else if(et_content.text.toString().replace(" ","") == ""){
+        } else if (et_content.text.toString().replace(" ", "") == "") {
             Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
             return false
-        }
-        else return true
+        } else return true
     }
 }

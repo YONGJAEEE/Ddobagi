@@ -1,21 +1,13 @@
 package com.example.ddobagi3.view
-
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Icon
-import android.media.Image
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
-import com.example.ddobagi3.adpater.AdressAdapter
 import com.example.ddobagi3.adpater.DiaryAdapter
 import com.example.ddobagi3.model.DiaryData
 import com.example.ddobagi3.widget.MyApplication
@@ -23,12 +15,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.item.view.*
 import uk.co.markormesher.android_fab.SpeedDialMenuAdapter
 import uk.co.markormesher.android_fab.SpeedDialMenuItem
 import java.lang.IllegalArgumentException
@@ -43,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     var diaryList : ArrayList<DiaryData> = arrayListOf()
     lateinit var firestore : FirebaseFirestore
+    var backKeyPressedTime : Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,6 +81,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+    }
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로가기 버튼을 한번 더 누르면 \n 앱이 종료됩니다.", Toast.LENGTH_SHORT).show()
+            return
+        }
+        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+            finish()
+        }
     }
 
     private val speedDialMenuAdapter = object : SpeedDialMenuAdapter() {

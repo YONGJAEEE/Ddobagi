@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.widget.Toast
 import com.example.ddobagi3.R
 import com.example.ddobagi3.adpater.AdressAdapter
 import com.example.ddobagi3.model.Documents
