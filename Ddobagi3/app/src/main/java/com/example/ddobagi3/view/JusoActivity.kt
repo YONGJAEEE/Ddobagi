@@ -49,5 +49,4 @@ class JusoActivity : AppCompatActivity() {
             }
         })
     }
-
 }

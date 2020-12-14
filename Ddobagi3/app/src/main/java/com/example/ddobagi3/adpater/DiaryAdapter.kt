@@ -92,7 +92,6 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
                 intent.putExtra("weather", diaryData.weather)
                 itemView.context.startActivity(intent)
             }
-
         }
     }
 
