@@ -38,8 +38,6 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-
     }
 
     public override fun onStart() {
@@ -66,27 +64,26 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(acct: GoogleSignInAccount) {
-        Log.d("LoginActivity", "firebaseAuthWithGoogle:" + acct.id!!)
 
         val credential = GoogleAuthProvider.getCredential(acct.idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    Log.w("LoginActivity", "firebaseAuthWithGoogle 성공", task.exception)
                     MyApplication.prefs.setString("uid",task.result!!.user!!.uid)
 
                     toMainActivity(firebaseAuth.currentUser)
                 } else {
-                    Log.w("LoginActivity", "firebaseAuthWithGoogle 실패", task.exception)
                     Toast.makeText(this, "Google Login Failed", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
-    fun toMainActivity(user: FirebaseUser?) {
+    private fun toMainActivity(user: FirebaseUser?) {
         if (user != null) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
+        }else{
+            Toast.makeText(this, "잠시후 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
         }
     }
 

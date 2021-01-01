@@ -34,7 +34,6 @@ class JusoActivity : AppCompatActivity() {
 
     fun getJusoByText(text : String){
         val call : Call<JusoResponse> = JusoRetrofitClient.instance.GetData.getXYByJuso(APIKey,1,20,text)
-
         call.enqueue(object : retrofit2.Callback<JusoResponse> {
             override fun onResponse(call: Call<JusoResponse>, response: Response<JusoResponse>) {
                 Log.d("Success", response.body().toString())
