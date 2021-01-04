@@ -25,18 +25,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
-        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
-        binding.executePendingBindings()
+        init()
+
+        btn_float.setButtonIconResource(R.drawable.ic_open)
+        btn_float.speedDialMenuAdapter = FabAdapter(this)
 
         val formatter = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)
         val todayDate = LocalDateTime.now().format(formatter)
         TodayDate.text = todayDate
-
-        btn_float.setButtonIconResource(R.drawable.ic_open)
-        btn_float.speedDialMenuAdapter = FabAdapter(this)
 
         with(viewModel) {
             diaryList.observe(this@MainActivity, androidx.lifecycle.Observer {
@@ -44,6 +40,14 @@ class MainActivity : AppCompatActivity() {
                 recyclerview.adapter = diarytAdapter
             })
         }
+    }
+
+    private fun init(){
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+        binding.executePendingBindings()
     }
 
     override fun onBackPressed() {

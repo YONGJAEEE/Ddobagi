@@ -2,7 +2,6 @@ package com.example.ddobagi3.adpater
 
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,7 +16,7 @@ import com.example.ddobagi3.model.Documents
 import com.example.ddobagi3.view.JusoActivity
 import com.example.ddobagi3.view.WriteActivity
 
-class AdressAdapter(val AdressList : ArrayList<Documents>) : RecyclerView.Adapter<AdressAdapter.Holder>(){
+class AdressAdapter(val AdressList: ArrayList<Documents>) : RecyclerView.Adapter<AdressAdapter.Holder>(){
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val jusoText = itemView.findViewById<TextView>(R.id.tv_juso)
 

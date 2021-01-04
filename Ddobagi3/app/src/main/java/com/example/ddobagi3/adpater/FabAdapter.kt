@@ -1,5 +1,6 @@
 package com.example.ddobagi3.adpater
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import com.example.ddobagi3.R
@@ -43,6 +44,7 @@ class FabAdapter(val context: Context) : SpeedDialMenuAdapter() {
                 FirebaseAuth.getInstance().signOut()
                 googleSignInClient.signOut()
                 context.startActivity(Intent(context, LoginActivity::class.java))
+                (context as Activity).finish()
             }
         }
         return true
