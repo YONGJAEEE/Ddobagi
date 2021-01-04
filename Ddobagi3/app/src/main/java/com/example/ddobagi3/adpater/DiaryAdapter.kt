@@ -85,6 +85,7 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ReadDiaryActivity::class.java)
+                intent.putExtra("documentId", diaryData.documentId)
                 intent.putExtra("title", diaryData.title)
                 intent.putExtra("date", diaryData.date)
                 intent.putExtra("content", diaryData.content)

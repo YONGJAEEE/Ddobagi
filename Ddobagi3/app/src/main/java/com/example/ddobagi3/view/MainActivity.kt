@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-
         btn_float.setButtonIconResource(R.drawable.ic_open)
         btn_float.speedDialMenuAdapter = FabAdapter(this)
 
