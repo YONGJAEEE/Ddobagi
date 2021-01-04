@@ -10,6 +10,7 @@ import com.example.ddobagi3.adpater.AdressAdapter
 import com.example.ddobagi3.model.Documents
 import com.example.ddobagi3.model.JusoResponse
 import com.example.ddobagi3.network.JusoRetrofitClient
+import com.example.ddobagi3.widget.TextObserver
 import kotlinx.android.synthetic.main.activity_juso.*
 import retrofit2.Call
 import retrofit2.Response
@@ -21,15 +22,7 @@ class JusoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_juso)
 
-        et_adress.addTextChangedListener(textWatcher)
-    }
-
-    private val textWatcher = object : TextWatcher {
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            getJusoByText(et_adress.text.toString())
-        }
-        override fun afterTextChanged(s: Editable?) {}
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        et_adress.addTextChangedListener(TextObserver(this,et_adress))
     }
 
     fun getJusoByText(text : String){
