@@ -3,6 +3,7 @@ package com.example.ddobagi3.view
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.ddobagi3.R
@@ -11,6 +12,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_modify.*
 import kotlinx.android.synthetic.main.activity_modify.et_content
 import kotlinx.android.synthetic.main.activity_modify.et_title
+import kotlinx.android.synthetic.main.activity_modify.tv_weather
 
 class ModifyActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
@@ -22,19 +24,29 @@ class ModifyActivity : AppCompatActivity() {
         setContentView(R.layout.activity_modify)
 
         val documentId = intent.getStringExtra("documentId")
-        val weather = intent.getStringExtra("weather")
-        val title = intent.getStringExtra("title")
-        val content = intent.getStringExtra("content")
-        val date = intent.getStringExtra("date")
         val location = intent.getStringExtra("location")
+        val date = intent.getStringExtra("date")
 
         firestore = FirebaseFirestore.getInstance()
         val ref = firestore.collection("USER")
             .document(MyApplication.prefs.getString("uid", "null"))
             .collection("diary")
+            .document(documentId!!)
 
-        et_title.setText(title)
-        et_content.setText(content!!.toString().replace("_nbsp_","\n"))
+        ref.addSnapshotListener { snapshot, e ->
+            if (e != null) {
+                Log.w("TAG", "Listen failed.", e)
+                return@addSnapshotListener
+            }
+            if (snapshot != null && snapshot.exists()) {
+                Log.d("TAG", "Current data: ${snapshot.data}")
+                et_title.setText(snapshot.data!!["title"].toString())
+                et_content.setText(snapshot.data!!["content"].toString().replace("_nbsp_","\n"))
+                tv_weather.text = snapshot.data!!["weather"].toString()
+            } else {
+                Log.e("TAG", "Current data: null")
+            }
+        }
 
         btn_modify.setOnClickListener() {
             if (isInput()) {
@@ -42,12 +54,12 @@ class ModifyActivity : AppCompatActivity() {
                     "documentId" to documentId,
                     "title" to et_title.text.toString(),
                     "date" to date,
-                    "weather" to weather,
+                    "weather" to tv_weather.text.toString(),
                     "location" to location,
                     "content" to et_content.text.toString().replace("\n", "_nbsp_")
                 )
 
-                ref.document(documentId!!).set(modifyData)
+                ref.set(modifyData)
                     .addOnSuccessListener {
                         Toast.makeText(this, "수정에 성공했습니다.", Toast.LENGTH_SHORT).show()
                         finish()
@@ -69,13 +81,17 @@ class ModifyActivity : AppCompatActivity() {
         }
     }
 
-    fun isInput(): Boolean {
-        if (et_title.text.toString().replace(" ", "") == "") {
-            Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
-            return false
-        } else if (et_content.text.toString().replace(" ", "") == "") {
-            Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
-            return false
-        } else return true
+    private fun isInput(): Boolean {
+        return when {
+            et_title.text.toString().replace(" ", "") == "" -> {
+                Toast.makeText(this, "제목을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                false
+            }
+            et_content.text.toString().replace(" ", "") == "" -> {
+                Toast.makeText(this, "내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                false
+            }
+            else -> true
+        }
     }
 }
