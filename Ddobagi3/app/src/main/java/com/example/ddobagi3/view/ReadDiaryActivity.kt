@@ -22,7 +22,7 @@ class ReadDiaryActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         init()
         val documentId = intent.getStringExtra("documentId")
-        var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
+        val firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
 
         val ref = firestore.collection("USER")
             .document(MyApplication.prefs.getString("uid","null"))
@@ -39,7 +39,7 @@ class ReadDiaryActivity : AppCompatActivity() {
                 tv_content.text = snapshot.data!!["content"]!!.toString().replace("_nbsp_", "\n")
                 tv_date.text = snapshot.data!!["date"]!!.toString()
                 tv_location.text = snapshot.data!!["location"].toString()
-                tv_title.text = title
+                tv_title.text = snapshot.data!!["title"].toString()
                 tv_weather.text = snapshot.data!!["weather"].toString()
             } else {
                 Log.e("TAG", "Current data: null")
