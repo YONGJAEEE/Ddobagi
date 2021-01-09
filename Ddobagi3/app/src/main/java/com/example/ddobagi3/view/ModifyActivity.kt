@@ -16,7 +16,9 @@ import kotlinx.android.synthetic.main.activity_modify.tv_weather
 
 class ModifyActivity : AppCompatActivity() {
     lateinit var firestore: FirebaseFirestore
-    var backKeyPressedTime : Long = 0
+    var backKeyPressedTime: Long = 0
+    lateinit var location: String
+    lateinit var date: String
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +26,6 @@ class ModifyActivity : AppCompatActivity() {
         setContentView(R.layout.activity_modify)
 
         val documentId = intent.getStringExtra("documentId")
-        val location = intent.getStringExtra("location")
-        val date = intent.getStringExtra("date")
 
         firestore = FirebaseFirestore.getInstance()
         val ref = firestore.collection("USER")
@@ -40,8 +40,10 @@ class ModifyActivity : AppCompatActivity() {
             }
             if (snapshot != null && snapshot.exists()) {
                 Log.d("TAG", "Current data: ${snapshot.data}")
+                date = snapshot.data!!["date"].toString()
+                location = snapshot.data!!["location"].toString()
                 et_title.setText(snapshot.data!!["title"].toString())
-                et_content.setText(snapshot.data!!["content"].toString().replace("_nbsp_","\n"))
+                et_content.setText(snapshot.data!!["content"].toString().replace("_nbsp_", "\n"))
                 tv_weather.text = snapshot.data!!["weather"].toString()
             } else {
                 Log.e("TAG", "Current data: null")
@@ -70,6 +72,7 @@ class ModifyActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
             backKeyPressedTime = System.currentTimeMillis()

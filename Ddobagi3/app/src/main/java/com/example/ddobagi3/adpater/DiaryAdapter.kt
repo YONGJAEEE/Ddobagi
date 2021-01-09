@@ -30,11 +30,11 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val tvTitle = itemView.findViewById<TextView>(R.id.tv_title)
-        val tvDate = itemView.findViewById<TextView>(R.id.tv_date)
-        val tvLocation = itemView.findViewById<TextView>(R.id.tv_adress)
-        val btnModify = itemView.findViewById<ImageButton>(R.id.btn_modify)
-        val btnDelete = itemView.findViewById<ImageButton>(R.id.btn_delete)
+        private val tvTitle = itemView.findViewById<TextView>(R.id.tv_title)
+        private val tvDate = itemView.findViewById<TextView>(R.id.tv_date)
+        private val tvLocation = itemView.findViewById<TextView>(R.id.tv_adress)
+        private val btnModify = itemView.findViewById<ImageButton>(R.id.btn_modify)
+        private val btnDelete = itemView.findViewById<ImageButton>(R.id.btn_delete)
 
         fun bind(diaryData: DiaryData) {
             tvTitle.text = diaryData.title
@@ -44,11 +44,6 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
             btnModify.setOnClickListener() {
                 val intent = Intent(itemView.context, ModifyActivity::class.java)
                 intent.putExtra("documentId", diaryData.documentId)
-                intent.putExtra("weather", diaryData.weather)
-                intent.putExtra("title", diaryData.title)
-                intent.putExtra("content", diaryData.content)
-                intent.putExtra("location",diaryData.location)
-                intent.putExtra("date",diaryData.date)
                 itemView.context.startActivity(intent)
             }
             btnDelete.setOnClickListener() {
