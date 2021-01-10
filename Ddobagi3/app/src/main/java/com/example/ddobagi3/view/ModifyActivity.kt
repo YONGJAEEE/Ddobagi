@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.example.ddobagi3.R
+import com.example.ddobagi3.model.DocumentId
 import com.example.ddobagi3.widget.MyApplication
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_modify.*
@@ -25,13 +26,11 @@ class ModifyActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_modify)
 
-        val documentId = intent.getStringExtra("documentId")
-
         firestore = FirebaseFirestore.getInstance()
         val ref = firestore.collection("USER")
             .document(MyApplication.prefs.getString("uid", "null"))
             .collection("diary")
-            .document(documentId!!)
+            .document(DocumentId.value)
 
         ref.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -39,7 +38,6 @@ class ModifyActivity : AppCompatActivity() {
                 return@addSnapshotListener
             }
             if (snapshot != null && snapshot.exists()) {
-                Log.d("TAG", "Current data: ${snapshot.data}")
                 date = snapshot.data!!["date"].toString()
                 location = snapshot.data!!["location"].toString()
                 et_title.setText(snapshot.data!!["title"].toString())
@@ -53,7 +51,7 @@ class ModifyActivity : AppCompatActivity() {
         btn_modify.setOnClickListener() {
             if (isInput()) {
                 val modifyData = hashMapOf(
-                    "documentId" to documentId,
+                    "documentId" to DocumentId.value,
                     "title" to et_title.text.toString(),
                     "date" to date,
                     "weather" to tv_weather.text.toString(),

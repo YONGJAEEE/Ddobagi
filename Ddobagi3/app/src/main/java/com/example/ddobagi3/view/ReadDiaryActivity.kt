@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.ddobagi3.R
 import com.example.ddobagi3.databinding.ActivityMainBinding
 import com.example.ddobagi3.databinding.ActivityReadDiaryBinding
+import com.example.ddobagi3.model.DocumentId
 import com.example.ddobagi3.viewmodel.MainViewModel
 import com.example.ddobagi3.viewmodel.ReadDiaryViewModel
 import com.example.ddobagi3.widget.MyApplication
@@ -21,13 +22,12 @@ class ReadDiaryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         init()
-        val documentId = intent.getStringExtra("documentId")
         val firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
 
         val ref = firestore.collection("USER")
             .document(MyApplication.prefs.getString("uid","null"))
             .collection("diary")
-            .document(documentId)
+            .document(DocumentId.value)
 
         ref.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -54,5 +54,4 @@ class ReadDiaryActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.executePendingBindings()
     }
-
 }

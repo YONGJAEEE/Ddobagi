@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ddobagi3.R
 import com.example.ddobagi3.model.DiaryData
+import com.example.ddobagi3.model.DocumentId
 import com.example.ddobagi3.view.MainActivity
 import com.example.ddobagi3.view.ModifyActivity
 import com.example.ddobagi3.view.ReadDiaryActivity
@@ -22,11 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
     RecyclerView.Adapter<DiaryAdapter.Holder>() {
 
-    var firestore: FirebaseFirestore
-
-    init {
-        firestore = FirebaseFirestore.getInstance()
-    }
+    var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -44,6 +41,7 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
             btnModify.setOnClickListener() {
                 val intent = Intent(itemView.context, ModifyActivity::class.java)
                 intent.putExtra("documentId", diaryData.documentId)
+                DocumentId.value = diaryData.documentId
                 itemView.context.startActivity(intent)
             }
             btnDelete.setOnClickListener() {
@@ -80,7 +78,7 @@ class DiaryAdapter(var diaryList: ArrayList<DiaryData>) :
 
             itemView.setOnClickListener {
                 val intent = Intent(itemView.context, ReadDiaryActivity::class.java)
-                intent.putExtra("documentId", diaryData.documentId)
+                DocumentId.value = diaryData.documentId
                 itemView.context.startActivity(intent)
             }
         }
